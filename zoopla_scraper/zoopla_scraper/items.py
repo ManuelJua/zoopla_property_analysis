@@ -41,6 +41,7 @@ class ZooplaScraperItem(scrapy.Item):
     letting_agent_name=scrapy.Field(output_processor=TakeFirst())
     available_from=scrapy.Field(input_processor=MapCompose(convert_to_datetime),output_processor=TakeFirst())
     property_url=scrapy.Field(output_processor=TakeFirst())
+    incorporation_date=scrapy.Field(output_processor=TakeFirst())
     #agency=scrapy.Field(input_processor=TakeFirst())
     #latitude=scrapy.Field()
     #longitude=scrapy.Field()

@@ -1,1 +1,4 @@
 venv/
+zoopla_scraper/zoopla_scraper/spiders/workshop.ipynb
+zoopla_scraper/zoopla_scraper/spiders/data_zoopla_analysis.ipynb
+zoopla_scraper/zoopla_scraper/spiders/postgres_database_design.txt

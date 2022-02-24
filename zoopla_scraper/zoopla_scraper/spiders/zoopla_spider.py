@@ -4,6 +4,7 @@ from scrapy.loader import ItemLoader
 #import re
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
+from datetime import datetime
 
 class ZooplaSpider(scrapy.Spider):
     name='zoopla'
@@ -40,6 +41,7 @@ class ZooplaSpider(scrapy.Spider):
         l.add_xpath('number_of_baths','//span[(@data-testid="baths-label") and (@class="css-8rvu8h-AttributeLabel eiwe0nt0")]/text()')
         l.add_xpath('images','//div[@class="css-1i4h94a-SlideImageWrapper e16xseoz0"]/picture/source/@srcset')
         l.add_value('property_url',kwargs['property_url'])
+        l.add_value('incorporation_date',datetime.now())
         l.add_xpath('letting_agent_name','//p[@class="css-1g2z706-Text-AgentName e1swwt8d3"]/text()')
         l.add_xpath('available_from','//span[@class="css-1f6ruxg-AvailableFrom eiwe0nt1"]/text()')
         #l.add_xpath('agency','//div[@class="css-o16bi5-AgentNameBlock e1swwt8d4"]/p[@class="css-1g2z706-Text-AgentName e1swwt8d3"]/text()')
