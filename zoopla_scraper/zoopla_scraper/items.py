@@ -6,8 +6,8 @@
 import scrapy
 from scrapy.loader import ItemLoader
 from itemloaders.processors import Identity, TakeFirst, MapCompose,Join
-import datetime
 
+import datetime
 import re
 import pandas as pd
 
@@ -42,6 +42,4 @@ class ZooplaScraperItem(scrapy.Item):
     available_from=scrapy.Field(input_processor=MapCompose(convert_to_datetime),output_processor=TakeFirst())
     property_url=scrapy.Field(output_processor=TakeFirst())
     incorporation_date=scrapy.Field(output_processor=TakeFirst())
-    #agency=scrapy.Field(input_processor=TakeFirst())
-    #latitude=scrapy.Field()
-    #longitude=scrapy.Field()
+    

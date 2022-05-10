@@ -1,35 +1,16 @@
 import scrapy
 from zoopla_scraper.items import ZooplaScraperItem
 from scrapy.loader import ItemLoader
-#import re
-from geopy.geocoders import Nominatim
-from geopy.extra.rate_limiter import RateLimiter
+
 from datetime import datetime
 
 class ZooplaSpider(scrapy.Spider):
     name='zoopla'
-    start_urls=['https://www.zoopla.co.uk/to-rent/property/edinburgh/?price_frequency=per_month&q=Edinburgh&results_sort=newest_listings&search_source=to-rent#listing_59237736']
+    start_urls=['https://www.zoopla.co.uk/to-rent/property/edinburgh/?price_frequency=per_month&q=Edinburgh&results_sort=newest_listings&search_source=to-rent']
+    #'https://www.zoopla.co.uk/to-rent/property/edinburgh/?price_frequency=per_month&q=Edinburgh&results_sort=newest_listings&search_source=to-rent#listing_59237736'
     
-    
-    def find_coordinates(self,address):
-        geolocator=Nominatim(user_agent='manu')
-        geocode=RateLimiter(geolocator.geocode,min_delay_seconds=1)
-        if address:
-            location=geocode(address)
-
-        if location:
-            latitude=location.latitude
-            longitude=location.longitude
-        else:
-            latitude=None
-            longitude=None
-        
-        return latitude,longitude
-
-
     def parse_property(self,response,**kwargs):
 
-        
         l=ItemLoader(item=ZooplaScraperItem(),selector=response)
     
         l.add_xpath('title','//span[@class="css-jv46e5-DisplayTitleLabel eiwe0nt5"]/text()')
@@ -44,10 +25,6 @@ class ZooplaSpider(scrapy.Spider):
         l.add_value('incorporation_date',datetime.now())
         l.add_xpath('letting_agent_name','//p[@class="css-1g2z706-Text-AgentName e1swwt8d3"]/text()')
         l.add_xpath('available_from','//span[@class="css-1f6ruxg-AvailableFrom eiwe0nt1"]/text()')
-        #l.add_xpath('agency','//div[@class="css-o16bi5-AgentNameBlock e1swwt8d4"]/p[@class="css-1g2z706-Text-AgentName e1swwt8d3"]/text()')
-
-        #item['latitude'],item['longitude']=self.find_coordinates(item['address'])
-       
         
         yield l.load_item()
         
@@ -55,7 +32,7 @@ class ZooplaSpider(scrapy.Spider):
 
     def parse(self,response):
         
-        partial_urls=response.xpath('//div[@class="css-mww4lt-StyledContent e2uk8e21"]/a[@class="e2uk8e20 css-1rzeb2c-StyledLink-Link-StyledLink e33dvwd0"]/@href').getall()
+        partial_urls=response.xpath('//div[@class="css-1anhqz4-ListingsContainer e1awou0d2"]//a[@data-testid="listing-details-link"]/@href').getall()
         if len(partial_urls)<1:
             print('\n\n URLs with properties are not responding')
         for url in partial_urls:
